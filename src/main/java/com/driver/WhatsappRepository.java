@@ -136,7 +136,7 @@ public class WhatsappRepository {
 
         for(Message message: userMessages){
             messages.remove(message.getId());
-            groupMessage.get(groupName).remove(message);
+            groupMessage.get(groupHashMap.get(groupName)).remove(message);
         }
 
 
