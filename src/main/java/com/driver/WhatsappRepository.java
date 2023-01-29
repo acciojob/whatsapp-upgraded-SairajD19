@@ -9,7 +9,7 @@ public class WhatsappRepository {
     private HashMap<String, User> userHashMap;
 
     //Group db
-    private HashMap<String, List<User>> groupHashMap;
+    private HashMap<Group, List<User>> groupHashMap;
 
     //Message db
     private HashMap<Integer, Message> messages;
@@ -49,13 +49,13 @@ public class WhatsappRepository {
     public Group createGroup(List<User> users){
         if(users.size()==2){
             Group group = new Group(users.get(1).getName(),2);
-            groupHashMap.put(group.getName(),users);
+            groupHashMap.put(group,users);
             return group;
         }
         else{
             groupCount++;
             Group group = new Group("Group "+groupCount, users.size());
-            groupHashMap.put(group.getName(), users);
+            groupHashMap.put(group, users);
             return group;
         }
     }
@@ -72,10 +72,10 @@ public class WhatsappRepository {
         //Throw "Group does not exist" if the mentioned group does not exist
         //Throw "You are not allowed to send message" if the sender is not a member of the group
         //If the message is sent successfully, return the final number of messages in that group.
-        if(!groupHashMap.containsKey(group.getName())){
+        if(!groupHashMap.containsKey(group)){
             throw new Exception("Group does not exist");
         }
-        if(!groupHashMap.get(group.getName()).contains(sender)){
+        if(!groupHashMap.get(group).contains(sender)){
             throw new Exception("You are not allowed to send message");
         }
 
@@ -107,8 +107,8 @@ public class WhatsappRepository {
         //If user is removed successfully, return (the updated number of users in the group + the updated number of messages in group + the updated number of overall messages)
         boolean userExist = false;
         boolean isAdmin = false;
-        String groupName = null;
-        for(String group:groupHashMap.keySet()){
+        Group groupName = null;
+        for(Group group:groupHashMap.keySet()){
             int num = 0;
             for(User user1:groupHashMap.get(group)){
                 num++;
@@ -117,7 +117,7 @@ public class WhatsappRepository {
                         isAdmin=true;
                     }
                     userExist=true;
-                    groupName=group;
+                    groupName = group;
                     break;
                 }
             }
@@ -136,7 +136,7 @@ public class WhatsappRepository {
 
         for(Message message: userMessages){
             messages.remove(message.getId());
-            groupMessage.get(groupHashMap.get(groupName)).remove(message);
+            groupMessage.get(groupName).remove(message);
         }
 
 
