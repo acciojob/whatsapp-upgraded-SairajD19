@@ -155,17 +155,17 @@ public class WhatsappRepository {
         //Throw "User is not a participant" if the user is not a part of the group
         //Change the admin of the group to "user" and return "SUCCESS". Note that at one time there is only one admin and the admin rights are transferred from approver to user.
 
-        if(!groupHashMap.containsKey(group.getName())){
+        if(!groupHashMap.containsKey(group)){
             throw new Exception("Group does not exist");
         }
 
 
-        if(!approver.equals(groupHashMap.get(group.getName()).get(0))){
+        if(!approver.equals(groupHashMap.get(group).get(0))){
             throw new Exception("Approver does not have rights");
         }
 
         boolean check=false;
-        for(User user1 : groupHashMap.get(group.getName())){
+        for(User user1 : groupHashMap.get(group)){
             if(user1.equals(user)){
                 check=true;
             }
@@ -175,9 +175,9 @@ public class WhatsappRepository {
             throw new Exception("User is not a participant");
         }
 
-        User oldAdmin = groupHashMap.get(group.getName()).get(0);
-        groupHashMap.get(group.getName()).set(0, user);
-        groupHashMap.get(group.getName()).add(oldAdmin);
+        User oldAdmin = groupHashMap.get(group).get(0);
+        groupHashMap.get(group).set(0, user);
+        groupHashMap.get(group).add(oldAdmin);
 
         return "SUCCESS";
 
