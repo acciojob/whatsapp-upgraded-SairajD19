@@ -12,8 +12,8 @@ public class WhatsappRepository {
     private HashMap<String, List<User>> groupHashMap;
 
     //Message db
-    //private Map<Integer, String> messages;
-    private List<Message> messages;
+    private HashMap<Integer, Message> messages;
+    //private List<Message> messages;
 
     //Group Messages db
     private HashMap<Group, List<Message>> groupMessage;
@@ -32,7 +32,7 @@ public class WhatsappRepository {
     public WhatsappRepository() {
         this.userHashMap = new HashMap<>();
         this.groupHashMap = new HashMap<>();
-        this.messages = new ArrayList<>();
+        this.messages = new HashMap<>();
         this.groupMessage = new HashMap<>();
         this.userMessage = new HashMap<>();
     }
@@ -64,7 +64,7 @@ public class WhatsappRepository {
         messageCount++;
         Message message = new Message(messageCount, content);
         message.setTimestamp(new Date());
-        messages.add(message);
+        messages.put(messageCount,message);
         return messageCount;
     }
 
@@ -134,18 +134,9 @@ public class WhatsappRepository {
 
         List<Message> userMessages=userMessage.get(user);
 
-        for(Group group:groupMessage.keySet()){
-            for(Message message:groupMessage.get(group)){
-                if(userMessages.contains(message)){
-                    groupMessage.get(group).remove(message);
-                }
-            }
-        }
-
-        for(Message message:messages){
-            if(userMessages.contains(message)){
-                messages.remove(message);
-            }
+        for(Message message: userMessages){
+            messages.remove(message.getId());
+            groupMessage.get(groupName).remove(message);
         }
 
 
