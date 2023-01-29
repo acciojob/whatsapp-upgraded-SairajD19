@@ -109,13 +109,16 @@ public class WhatsappRepository {
         boolean isAdmin = false;
         String groupName = null;
         for(String group:groupHashMap.keySet()){
+            if(groupHashMap.get(group).get(0)==user){
+                throw new Exception("Cannot remove admin");
+            }
             for(User user1:groupHashMap.get(group)){
-                int num = 0;
+//                int num = 0;
                 if(user1.equals(user)){
-                    num++;
-                    if(num==1){
-                        isAdmin=true;
-                    }
+                    //num++;
+//                    if(num==1){
+//                        isAdmin=true;
+//                    }
                     userExist=true;
                     groupName=group;
                     break;
@@ -128,9 +131,9 @@ public class WhatsappRepository {
         if(!userExist){
             throw new Exception("User not found");
         }
-        if(isAdmin){
-            throw new Exception("Cannot remove admin");
-        }
+//        if(isAdmin){
+//            throw new Exception("Cannot remove admin");
+//        }
 
         List<Message> userMessages=userMessage.get(user);
 
