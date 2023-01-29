@@ -29,6 +29,14 @@ public class WhatsappRepository {
 
 
 
+    public WhatsappRepository() {
+        this.userHashMap = new HashMap<>();
+        this.groupHashMap = new HashMap<>();
+        this.messages = new ArrayList<>();
+        this.groupMessage = new HashMap<>();
+        this.userMessage = new HashMap<>();
+    }
+
     public String createUser(String name, String mobile) throws Exception{
         if(userHashMap.containsKey(mobile)){
             throw new Exception("User already exists");
@@ -54,7 +62,8 @@ public class WhatsappRepository {
 
     public int createMessage(String content){
         messageCount++;
-        Message message = new Message(messageCount, content, new Date());
+        Message message = new Message(messageCount, content);
+        message.setTimestamp(new Date());
         messages.add(message);
         return messageCount;
     }
